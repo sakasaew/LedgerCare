@@ -47,11 +47,13 @@ export default function LoginPage() {
           <div className="w-20 h-20 bg-sage-500 rounded-3xl flex items-center justify-center mb-5 shadow-lg shadow-sage-200">
             <BookOpen size={36} className="text-white" strokeWidth={1.5} />
           </div>
-          <h1 className="text-4xl font-bold text-sage-600 tracking-tight mb-2">LedgerCare</h1>
+          <h1 className="text-4xl font-bold text-sage-600 tracking-tight mb-2">らくらくよみとり</h1>
           <p className="text-base text-gray-500 text-center leading-relaxed">
-            らくらくスキャン
+            レシートや領収書、紙の帳簿を読み取って
             <br />
-            ひっそりDX
+            テキストデータに変換。
+            <br />
+            スプレッドシートに書き出すことができます。
           </p>
         </div>
 

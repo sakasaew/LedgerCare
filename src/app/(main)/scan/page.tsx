@@ -134,7 +134,7 @@ export default function ScanPage() {
       <div>
         {/* ヘッダー */}
         <header className="flex items-center justify-between px-5 pt-12 pb-4">
-          <h1 className="text-xl font-bold text-sage-600 tracking-tight">LedgerCare</h1>
+          <h1 className="text-xl font-bold text-sage-600 tracking-tight">らくらくよみとり</h1>
           <div className="flex items-center gap-3">
             <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm" aria-label="通知">
               <Bell size={20} className="text-gray-500" />
@@ -153,8 +153,10 @@ export default function ScanPage() {
               <br />
               読み取り
             </h2>
-            <p className="text-base text-gray-500 mt-2">
-              スキャンする方法を選んでください
+            <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+              レシートや領収書、紙の帳簿を読み取って
+              テキストデータに変換。
+              スプレッドシートに書き出すことができます。
             </p>
           </div>
 

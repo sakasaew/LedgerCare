@@ -5,9 +5,9 @@ import Providers from '@/components/Providers';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'LedgerCare',
-  description: '写真から帳簿を自動作成 — らくらくスキャン、ひっそりDX',
-  appleWebApp: { capable: true, title: 'LedgerCare', statusBarStyle: 'default' },
+  title: 'らくらくよみとり',
+  description: 'レシートや領収書、紙の帳簿を読み取ってテキストデータに変換。スプレッドシートに書き出すことができます。',
+  appleWebApp: { capable: true, title: 'らくらくよみとり', statusBarStyle: 'default' },
 };
 
 export const viewport: Viewport = {
