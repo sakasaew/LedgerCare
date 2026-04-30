@@ -25,6 +25,14 @@ export function addTransactions(items: Transaction[]): void {
   localStorage.setItem(KEY, JSON.stringify(merged));
 }
 
+export function deleteTransaction(id: string): void {
+  localStorage.setItem(KEY, JSON.stringify(getTransactions().filter(t => t.id !== id)));
+}
+
+export function clearAllTransactions(): void {
+  localStorage.removeItem(KEY);
+}
+
 export function markSynced(ids: string[]): void {
   const idSet = new Set(ids);
   const updated = getTransactions().map(t =>

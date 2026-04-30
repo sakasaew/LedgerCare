@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getTransactions, formatAmount, formatDate } from '@/lib/storage';
+import { getTransactions, formatAmount, deleteTransaction, clearAllTransactions } from '@/lib/storage';
 import type { Transaction } from '@/lib/types';
 import TransactionItem from '@/components/TransactionItem';
-import { TrendingDown } from 'lucide-react';
+import { TrendingDown, Trash2 } from 'lucide-react';
 
 export default function HistoryPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -11,6 +11,17 @@ export default function HistoryPage() {
   useEffect(() => {
     setTransactions(getTransactions());
   }, []);
+
+  const handleDelete = (id: string) => {
+    deleteTransaction(id);
+    setTransactions(prev => prev.filter(t => t.id !== id));
+  };
+
+  const handleClearAll = () => {
+    if (!confirm('すべての取引データを削除しますか？')) return;
+    clearAllTransactions();
+    setTransactions([]);
+  };
 
   // 今月の支出合計
   const now = new Date();
@@ -31,9 +42,19 @@ export default function HistoryPage() {
   return (
     <div>
       {/* ヘッダー */}
-      <header className="px-5 pt-8 pb-4 lg:px-8 lg:max-w-4xl lg:mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800">取引履歴</h1>
-        <p className="text-sm text-gray-500 mt-1">過去の記録を確認できます</p>
+      <header className="px-5 pt-8 pb-4 lg:px-8 lg:max-w-4xl lg:mx-auto flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">取引履歴</h1>
+          <p className="text-sm text-gray-500 mt-1">過去の記録を確認できます</p>
+        </div>
+        {transactions.length > 0 && (
+          <button
+            onClick={handleClearAll}
+            className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-600 border border-red-200 hover:border-red-400 rounded-xl px-3 py-2 transition-colors mt-1"
+          >
+            <Trash2 size={13} /> 全件削除
+          </button>
+        )}
       </header>
 
       <div className="px-5 space-y-4 pb-10 lg:px-8 lg:max-w-4xl lg:mx-auto">
@@ -69,7 +90,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="divide-y divide-sand-100">
                   {txs.map(t => (
-                    <TransactionItem key={t.id} t={t} />
+                    <TransactionItem key={t.id} t={t} onDelete={handleDelete} />
                   ))}
                 </div>
               </div>

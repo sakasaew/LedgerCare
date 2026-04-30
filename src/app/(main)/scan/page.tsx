@@ -350,7 +350,16 @@ export default function ScanPage() {
 
               <div className="space-y-3">
                 {items.map(it => (
-                  <div key={it.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                  <div key={it.id} className="bg-white rounded-2xl p-4 shadow-sm relative">
+                    {!it.editing && (
+                      <button
+                        onClick={() => setItems(prev => prev.filter(i => i.id !== it.id))}
+                        className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-lg text-gray-300 hover:text-red-400 hover:bg-red-50 transition-colors"
+                        aria-label="削除"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
                     {it.confidence === 'low' && (
                       <div className="flex items-center gap-2 mb-3 text-amber-600 bg-amber-50 rounded-xl px-3 py-2">
                         <AlertTriangle size={14} />

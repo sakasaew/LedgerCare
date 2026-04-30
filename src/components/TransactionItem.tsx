@@ -4,7 +4,7 @@ import { formatAmount, formatDateShort } from '@/lib/storage';
 import type { LucideIcon } from 'lucide-react';
 import {
   UtensilsCrossed, Bus, ShoppingCart, Handshake,
-  Lightbulb, Smartphone, MoreHorizontal,
+  Lightbulb, Smartphone, MoreHorizontal, Trash2,
 } from 'lucide-react';
 import type { Category } from '@/lib/types';
 
@@ -28,10 +28,10 @@ const ICON_BG: Record<Category, string> = {
   'その他':   'bg-gray-100',
 };
 
-export default function TransactionItem({ t }: { t: Transaction }) {
+export default function TransactionItem({ t, onDelete }: { t: Transaction; onDelete?: (id: string) => void }) {
   const Icon = ICON_MAP[t.category] ?? MoreHorizontal;
   return (
-    <div className="flex items-center gap-3 py-3">
+    <div className="flex items-center gap-3 py-3 group">
       <span className={`flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center ${ICON_BG[t.category]}`}>
         <Icon size={20} className={CATEGORY_BADGE[t.category].split(' ')[1]} />
       </span>
@@ -40,6 +40,15 @@ export default function TransactionItem({ t }: { t: Transaction }) {
         <p className="text-sm text-gray-500">{formatDateShort(t.date)}</p>
       </div>
       <span className="font-bold text-gray-800 tabular-nums">{formatAmount(t.amount)}</span>
+      {onDelete && (
+        <button
+          onClick={() => onDelete(t.id)}
+          className="ml-1 w-8 h-8 flex items-center justify-center rounded-xl text-gray-300 hover:text-red-400 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+          aria-label="削除"
+        >
+          <Trash2 size={15} />
+        </button>
+      )}
     </div>
   );
 }
