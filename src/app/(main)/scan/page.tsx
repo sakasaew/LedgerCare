@@ -38,6 +38,8 @@ export default function ScanPage() {
   const [imgSrc, setImgSrc] = useState('');
   const [step, setStep] = useState<Step>('home');
   const [items, setItems] = useState<Item[]>([]);
+  const [transcription, setTranscription] = useState('');
+  const [showTranscription, setShowTranscription] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [recent, setRecent] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
@@ -83,9 +85,10 @@ export default function ScanPage() {
         body: JSON.stringify({ imageData: b64, mimeType: mime }),
       });
       if (!res.ok) throw new Error('failed');
-      const { transactions } = await res.json();
+      const data = await res.json();
+      setTranscription(data.transcription ?? '');
       setItems(
-        (transactions as Omit<Item, 'id' | 'editing'>[]).map((t, i) => ({
+        ((data.transactions ?? []) as Omit<Item, 'id' | 'editing'>[]).map((t, i) => ({
           ...t,
           id: `${Date.now()}-${i}`,
           editing: false,
@@ -308,7 +311,49 @@ export default function ScanPage() {
         {/* --- STEP: review --- */}
         {step === 'review' && (
           <>
-            <p className="text-base text-gray-500 font-medium">抽出された取引データ</p>
+            {/* 全文書き起こし（折りたたみ） */}
+            {transcription && (
+              <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+                <button
+                  onClick={() => setShowTranscription(v => !v)}
+                  className="w-full flex items-center justify-between px-5 py-4 text-left"
+                >
+                  <span className="text-base font-bold text-gray-700">全文書き起こし</span>
+                  <ChevronDown
+                    size={18}
+                    className={`text-gray-400 transition-transform ${showTranscription ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {showTranscription && (
+                  <div className="px-5 pb-5">
+                    <pre className="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed font-sans bg-sand-50 rounded-2xl p-4 max-h-64 overflow-y-auto">
+                      {transcription}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 取引が見つからなかった場合 */}
+            {items.length === 0 ? (
+              <div className="bg-white rounded-3xl p-6 shadow-sm text-center space-y-3">
+                <p className="text-lg font-semibold text-gray-700">金額のある取引が見つかりませんでした</p>
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  全文書き起こしは上に保存されています。<br />手動で取引を追加することもできます。
+                </p>
+                <button
+                  onClick={() => {
+                    const id = `${Date.now()}-0`;
+                    setItems([{ id, date: new Date().toISOString().split('T')[0], merchant: '', amount: 0, category: 'その他', notes: transcription.slice(0, 100), confidence: 'low', editing: true }]);
+                  }}
+                  className="w-full py-4 rounded-2xl border-2 border-sage-200 text-sage-600 font-bold text-base active:scale-95 transition-transform"
+                >
+                  手動で取引を追加
+                </button>
+              </div>
+            ) : (
+              <p className="text-base text-gray-500 font-medium">抽出された取引データ（{items.length}件）</p>
+            )}
 
             <div className="space-y-3">
               {items.map(it => (
@@ -417,12 +462,14 @@ export default function ScanPage() {
               ))}
             </div>
 
-            <button
-              onClick={saveAll}
-              className="w-full bg-sage-500 text-white rounded-3xl py-5 text-xl font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform flex items-center justify-center gap-2"
-            >
-              すべて保存する
-            </button>
+            {items.length > 0 && (
+              <button
+                onClick={saveAll}
+                className="w-full bg-sage-500 text-white rounded-3xl py-5 text-xl font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform flex items-center justify-center gap-2"
+              >
+                すべて保存する
+              </button>
+            )}
           </>
         )}
 
