@@ -22,12 +22,12 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'authenticated') router.replace('/home');
+    if (status === 'authenticated') router.replace('/scan');
   }, [status, router]);
 
   const handleDemo = () => {
     localStorage.setItem(DEMO_KEY, '1');
-    router.push('/home');
+    router.push('/scan');
   };
 
   if (status === 'loading' || status === 'authenticated') {
@@ -63,7 +63,7 @@ export default function LoginPage() {
             ログインしてください
           </p>
           <button
-            onClick={() => signIn('google', { callbackUrl: '/home' })}
+            onClick={() => signIn('google', { callbackUrl: '/scan' })}
             className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 rounded-2xl py-5 px-6 text-lg font-medium text-gray-700 hover:bg-gray-50 active:scale-95 transition-all shadow-sm"
           >
             <GoogleIcon />

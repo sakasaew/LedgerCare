@@ -4,10 +4,9 @@ import { usePathname } from 'next/navigation';
 import { Home, ScanLine, Clock, RefreshCw } from 'lucide-react';
 
 const NAV = [
-  { href: '/home',    label: 'ホーム',   Icon: Home },
-  { href: '/scan',    label: 'スキャン', Icon: ScanLine },
+  { href: '/scan',   label: '読み込み', Icon: ScanLine },
   { href: '/history', label: '履歴',     Icon: Clock },
-  { href: '/sync',    label: '同期',     Icon: RefreshCw },
+  { href: '/sync',   label: '同期',     Icon: RefreshCw },
 ] as const;
 
 export default function BottomNav() {
@@ -17,7 +16,7 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-sand-200 safe-bottom">
       <div className="max-w-[430px] mx-auto flex">
         {NAV.map(({ href, label, Icon }) => {
-          const active = pathname === href || (href !== '/home' && pathname.startsWith(href));
+          const active = pathname === href;
           return (
             <Link
               key={href}
