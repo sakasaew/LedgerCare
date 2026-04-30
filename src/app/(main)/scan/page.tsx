@@ -45,14 +45,12 @@ export default function ScanPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // 画像がsessionStorageにある場合はスキャン画面へ
     const b64 = sessionStorage.getItem('lc_img');
     const mime = sessionStorage.getItem('lc_mime') || 'image/jpeg';
     if (b64) {
       setImgSrc(`data:${mime};base64,${b64}`);
       setStep('preview');
     }
-    // 履歴を読み込み
     const txs = getTransactions();
     setRecent(txs.length > 0 ? txs.slice(0, 3) : DEMO_TRANSACTIONS);
   }, []);
@@ -126,14 +124,11 @@ export default function ScanPage() {
     }, 1600);
   };
 
-  const today = new Date().toISOString().split('T')[0];
-
-  // ホーム画面
+  /* ── ホーム画面 ── */
   if (step === 'home') {
     return (
       <div>
-        {/* ヘッダー */}
-        <header className="flex items-center justify-between px-5 pt-12 pb-4">
+        <header className="flex items-center justify-between px-5 pt-8 pb-4 lg:px-8 lg:max-w-4xl lg:mx-auto">
           <h1 className="text-xl font-bold text-sage-600 tracking-tight">らくらくよみとり</h1>
           <div className="flex items-center gap-3">
             <button className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm" aria-label="通知">
@@ -145,24 +140,20 @@ export default function ScanPage() {
           </div>
         </header>
 
-        <div className="px-5 space-y-6">
-          {/* タイトル */}
+        <div className="px-5 space-y-5 lg:px-8 lg:max-w-4xl lg:mx-auto">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 leading-tight">
-              領収書の
-              <br />
-              読み取り
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 leading-tight">
+              領収書の読み取り
             </h2>
-            <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+            <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">
               レシートや領収書、紙の帳簿を読み取って
               テキストデータに変換。
               スプレッドシートに書き出すことができます。
             </p>
           </div>
 
-          {/* スキャンボタン */}
-          <div className="space-y-3">
-            {/* カメラ起動 */}
+          {/* スキャンボタン: PC は横並び */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             <label className="block cursor-pointer">
               <input
                 ref={cameraRef}
@@ -172,17 +163,14 @@ export default function ScanPage() {
                 className="sr-only"
                 onChange={e => handleFile(e.target.files?.[0])}
               />
-              <div
-                className={`bg-sage-500 rounded-3xl p-7 flex flex-col items-center gap-3 transition-transform active:scale-95 shadow-md shadow-sage-200 ${loading ? 'opacity-70' : ''}`}
-              >
-                <div className="w-14 h-14 bg-sage-400 rounded-2xl flex items-center justify-center">
-                  <Camera size={28} className="text-white" strokeWidth={1.5} />
+              <div className={`bg-sage-500 rounded-2xl p-5 lg:p-6 flex items-center lg:flex-col lg:items-center gap-4 transition-transform active:scale-95 shadow-md shadow-sage-200 ${loading ? 'opacity-70' : ''}`}>
+                <div className="w-12 h-12 bg-sage-400 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Camera size={24} className="text-white" strokeWidth={1.5} />
                 </div>
-                <span className="text-xl font-bold text-white">カメラ起動</span>
+                <span className="text-lg font-bold text-white">カメラ起動</span>
               </div>
             </label>
 
-            {/* 写真を選ぶ */}
             <label className="block cursor-pointer">
               <input
                 ref={galleryRef}
@@ -191,27 +179,23 @@ export default function ScanPage() {
                 className="sr-only"
                 onChange={e => handleFile(e.target.files?.[0])}
               />
-              <div className="bg-sand-200 rounded-3xl p-7 flex flex-col items-center gap-3 transition-transform active:scale-95 shadow-sm">
-                <div className="w-14 h-14 bg-sand-300 rounded-2xl flex items-center justify-center">
-                  <ImageIcon size={28} className="text-gray-500" strokeWidth={1.5} />
+              <div className="bg-sand-200 rounded-2xl p-5 lg:p-6 flex items-center lg:flex-col lg:items-center gap-4 transition-transform active:scale-95 shadow-sm">
+                <div className="w-12 h-12 bg-sand-300 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <ImageIcon size={24} className="text-gray-500" strokeWidth={1.5} />
                 </div>
-                <span className="text-xl font-bold text-gray-600">写真を選ぶ</span>
+                <span className="text-lg font-bold text-gray-600">写真を選ぶ</span>
               </div>
             </label>
           </div>
 
           {/* 最近の履歴 */}
-          <div className="bg-white rounded-3xl p-5 shadow-sm">
+          <div className="bg-white rounded-2xl p-5 shadow-sm">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-bold text-gray-800">最近の履歴</span>
-              <Link
-                href="/history"
-                className="flex items-center gap-1 text-sage-500 text-base font-medium"
-              >
-                すべて見る <ChevronRight size={16} />
+              <span className="text-base font-bold text-gray-800">最近の履歴</span>
+              <Link href="/history" className="flex items-center gap-1 text-sage-500 text-sm font-medium">
+                すべて見る <ChevronRight size={14} />
               </Link>
             </div>
-
             {recent.length > 0 ? (
               <div className="divide-y divide-sand-100">
                 {recent.map(t => (
@@ -219,17 +203,14 @@ export default function ScanPage() {
                 ))}
               </div>
             ) : (
-              <div className="py-8 text-center">
+              <div className="py-6 text-center">
                 <p className="text-gray-400 text-base">まだ記録がありません</p>
-                <p className="text-gray-300 text-sm mt-1">
-                  上のボタンからスキャンしてみましょう
-                </p>
+                <p className="text-gray-300 text-sm mt-1">上のボタンからスキャンしてみましょう</p>
               </div>
             )}
           </div>
         </div>
 
-        {/* ローディングオーバーレイ */}
         {loading && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white rounded-3xl px-8 py-6 flex flex-col items-center gap-3">
@@ -242,10 +223,11 @@ export default function ScanPage() {
     );
   }
 
+  /* ── スキャン・レビュー画面 ── */
   return (
     <div className="min-h-dvh bg-sand-100">
       {/* ヘッダー */}
-      <header className="flex items-center justify-between px-5 pt-12 pb-4">
+      <header className="flex items-center justify-between px-5 pt-8 pb-4 lg:px-8 lg:max-w-6xl lg:mx-auto">
         <button
           onClick={() => {
             sessionStorage.removeItem('lc_img');
@@ -257,234 +239,210 @@ export default function ScanPage() {
         >
           <X size={20} className="text-gray-600" />
         </button>
-        <h1 className="text-lg font-bold text-gray-800">確認</h1>
+        <h1 className="text-base font-bold text-gray-800">確認</h1>
         <div className="w-10" />
       </header>
 
-      <div className="px-5 pb-10 space-y-5">
-        {/* 画像プレビュー */}
-        {imgSrc && (
-          <div className="relative rounded-3xl overflow-hidden bg-gray-100 aspect-[4/3]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imgSrc} alt="スキャン画像" className="w-full h-full object-cover" />
+      {/* PC: 2カラム / モバイル: 縦積み */}
+      <div className="lg:max-w-6xl lg:mx-auto lg:px-8 lg:pb-10 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
 
-            {step === 'review' && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-2 shadow">
-                  <CheckCircle2 size={18} className="text-green-500" />
-                  <span className="text-sm font-semibold text-gray-700">
-                    スキャン成功（{items.length}件）
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* エラーメッセージ */}
-        {errMsg && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
-            <AlertTriangle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
-            <p className="text-red-700 text-base">{errMsg}</p>
-          </div>
-        )}
-
-        {/* --- STEP: preview --- */}
-        {step === 'preview' && (
-          <button
-            onClick={analyze}
-            className="w-full bg-sage-500 text-white rounded-3xl py-5 text-xl font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform"
-          >
-            AIで読み取る
-          </button>
-        )}
-
-        {/* --- STEP: analyzing --- */}
-        {step === 'analyzing' && (
-          <div className="bg-white rounded-3xl p-8 flex flex-col items-center gap-4 shadow-sm">
-            <div className="w-12 h-12 border-4 border-sage-200 border-t-sage-500 rounded-full animate-spin" />
-            <p className="text-xl font-semibold text-gray-700">AIが読み取っています</p>
-            <p className="text-base text-gray-400 text-center">
-              しばらくお待ちください…
-            </p>
-          </div>
-        )}
-
-        {/* --- STEP: review --- */}
-        {step === 'review' && (
-          <>
-            {/* 全文書き起こし（折りたたみ） */}
-            {transcription && (
-              <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
-                <button
-                  onClick={() => setShowTranscription(v => !v)}
-                  className="w-full flex items-center justify-between px-5 py-4 text-left"
-                >
-                  <span className="text-base font-bold text-gray-700">全文書き起こし</span>
-                  <ChevronDown
-                    size={18}
-                    className={`text-gray-400 transition-transform ${showTranscription ? 'rotate-180' : ''}`}
-                  />
-                </button>
-                {showTranscription && (
-                  <div className="px-5 pb-5">
-                    <pre className="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed font-sans bg-sand-50 rounded-2xl p-4 max-h-64 overflow-y-auto">
-                      {transcription}
-                    </pre>
+        {/* 左列: 画像 + 操作 */}
+        <div className="px-5 lg:px-0 space-y-4">
+          {imgSrc && (
+            <div className="relative rounded-2xl overflow-hidden bg-gray-100 aspect-[4/3]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={imgSrc} alt="スキャン画像" className="w-full h-full object-cover" />
+              {step === 'review' && (
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-2 flex items-center gap-2 shadow">
+                    <CheckCircle2 size={16} className="text-green-500" />
+                    <span className="text-sm font-semibold text-gray-700">
+                      スキャン成功（{items.length}件）
+                    </span>
                   </div>
-                )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {errMsg && (
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
+              <AlertTriangle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
+              <p className="text-red-700 text-base">{errMsg}</p>
+            </div>
+          )}
+
+          {step === 'preview' && (
+            <button
+              onClick={analyze}
+              className="w-full bg-sage-500 text-white rounded-2xl py-4 text-lg font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform"
+            >
+              AIで読み取る
+            </button>
+          )}
+
+          {step === 'analyzing' && (
+            <div className="bg-white rounded-2xl p-6 flex flex-col items-center gap-4 shadow-sm">
+              <div className="w-10 h-10 border-4 border-sage-200 border-t-sage-500 rounded-full animate-spin" />
+              <p className="text-lg font-semibold text-gray-700">AIが読み取っています</p>
+              <p className="text-sm text-gray-400">しばらくお待ちください…</p>
+            </div>
+          )}
+
+          {step === 'done' && (
+            <div className="flex flex-col items-center gap-4 py-8">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle2 size={32} className="text-green-500" />
               </div>
-            )}
+              <p className="text-xl font-bold text-gray-800">保存しました</p>
+              <p className="text-sm text-gray-500">ホームに戻ります…</p>
+            </div>
+          )}
+        </div>
 
-            {/* 取引が見つからなかった場合 */}
-            {items.length === 0 ? (
-              <div className="bg-white rounded-3xl p-6 shadow-sm text-center space-y-3">
-                <p className="text-lg font-semibold text-gray-700">金額のある取引が見つかりませんでした</p>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  全文書き起こしは上に保存されています。<br />手動で取引を追加することもできます。
-                </p>
-                <button
-                  onClick={() => {
-                    const id = `${Date.now()}-0`;
-                    setItems([{ id, date: new Date().toISOString().split('T')[0], merchant: '', amount: 0, category: 'その他', notes: transcription.slice(0, 100), confidence: 'low', editing: true }]);
-                  }}
-                  className="w-full py-4 rounded-2xl border-2 border-sage-200 text-sage-600 font-bold text-base active:scale-95 transition-transform"
-                >
-                  手動で取引を追加
-                </button>
-              </div>
-            ) : (
-              <p className="text-base text-gray-500 font-medium">抽出された取引データ（{items.length}件）</p>
-            )}
-
-            <div className="space-y-3">
-              {items.map(it => (
-                <div key={it.id} className="bg-white rounded-3xl p-4 shadow-sm">
-                  {it.confidence === 'low' && (
-                    <div className="flex items-center gap-2 mb-3 text-amber-600 bg-amber-50 rounded-xl px-3 py-2">
-                      <AlertTriangle size={16} />
-                      <span className="text-sm font-medium">確認が必要です</span>
-                    </div>
-                  )}
-
-                  {it.editing ? (
-                    /* 編集フォーム */
-                    <div className="space-y-3">
-                      <label className="flex items-center gap-3">
-                        <Calendar size={18} className="text-sage-400 flex-shrink-0" />
-                        <input
-                          type="date"
-                          value={it.date}
-                          onChange={e => updateItem(it.id, { date: e.target.value })}
-                          className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-base text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300"
-                        />
-                      </label>
-                      <label className="flex items-center gap-3">
-                        <Store size={18} className="text-sage-400 flex-shrink-0" />
-                        <input
-                          type="text"
-                          value={it.merchant}
-                          placeholder="支払先・店名"
-                          onChange={e => updateItem(it.id, { merchant: e.target.value })}
-                          className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-base text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300"
-                        />
-                      </label>
-                      <label className="flex items-center gap-3">
-                        <Coins size={18} className="text-sage-400 flex-shrink-0" />
-                        <div className="flex-1 relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">¥</span>
-                          <input
-                            type="number"
-                            value={it.amount}
-                            onChange={e => updateItem(it.id, { amount: Number(e.target.value) })}
-                            className="w-full border border-sand-300 rounded-xl pl-7 pr-3 py-2 text-base text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300"
-                          />
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-3">
-                        <Tag size={18} className="text-sage-400 flex-shrink-0" />
-                        <div className="flex-1 relative">
-                          <select
-                            value={it.category}
-                            onChange={e => updateItem(it.id, { category: e.target.value as Category })}
-                            className="w-full appearance-none border border-sand-300 rounded-xl px-3 py-2 text-base text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300"
-                          >
-                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                          </select>
-                          <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-3">
-                        <FileText size={18} className="text-sage-400 flex-shrink-0" />
-                        <input
-                          type="text"
-                          value={it.notes}
-                          placeholder="備考（任意）"
-                          onChange={e => updateItem(it.id, { notes: e.target.value })}
-                          className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-base text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300"
-                        />
-                      </label>
-                      <button
-                        onClick={() => updateItem(it.id, { editing: false })}
-                        className="w-full flex items-center justify-center gap-2 bg-sage-500 text-white rounded-2xl py-3 text-base font-bold active:scale-95 transition-transform"
-                      >
-                        <Check size={18} /> 確定
-                      </button>
-                    </div>
-                  ) : (
-                    /* 表示モード */
-                    <div>
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-                            <Calendar size={14} />
-                            <span>{it.date.replace(/-/g, '/')}</span>
-                          </div>
-                          <CategoryBadge category={it.category} />
-                        </div>
-                        <span className="text-2xl font-bold text-gray-800 tabular-nums">
-                          {formatAmount(it.amount)}
-                        </span>
-                      </div>
-                      {it.merchant && (
-                        <p className="text-base text-gray-700 font-medium mb-1">{it.merchant}</p>
-                      )}
-                      {it.notes && (
-                        <p className="text-sm text-gray-400">{it.notes}</p>
-                      )}
-                      <button
-                        onClick={() => updateItem(it.id, { editing: true })}
-                        className="mt-3 flex items-center gap-1.5 text-sm text-sage-500 font-medium border border-sage-200 rounded-xl px-3 py-1.5 hover:bg-sage-50 transition-colors"
-                      >
-                        <Pencil size={14} /> 修正
-                      </button>
+        {/* 右列: レビュー内容 */}
+        <div className="px-5 lg:px-0 pb-10 lg:pb-0 space-y-4">
+          {step === 'review' && (
+            <>
+              {/* 全文書き起こし */}
+              {transcription && (
+                <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                  <button
+                    onClick={() => setShowTranscription(v => !v)}
+                    className="w-full flex items-center justify-between px-4 py-3 text-left"
+                  >
+                    <span className="text-sm font-bold text-gray-700">全文書き起こし</span>
+                    <ChevronDown
+                      size={16}
+                      className={`text-gray-400 transition-transform ${showTranscription ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {showTranscription && (
+                    <div className="px-4 pb-4">
+                      <pre className="text-xs text-gray-600 whitespace-pre-wrap leading-relaxed font-sans bg-sand-50 rounded-xl p-3 max-h-48 overflow-y-auto">
+                        {transcription}
+                      </pre>
                     </div>
                   )}
                 </div>
-              ))}
-            </div>
+              )}
 
-            {items.length > 0 && (
-              <button
-                onClick={saveAll}
-                className="w-full bg-sage-500 text-white rounded-3xl py-5 text-xl font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform flex items-center justify-center gap-2"
-              >
-                すべて保存する
-              </button>
-            )}
-          </>
-        )}
+              {/* 取引なし */}
+              {items.length === 0 ? (
+                <div className="bg-white rounded-2xl p-5 shadow-sm text-center space-y-3">
+                  <p className="text-base font-semibold text-gray-700">金額のある取引が見つかりませんでした</p>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    全文書き起こしは上に保存されています。<br />手動で取引を追加することもできます。
+                  </p>
+                  <button
+                    onClick={() => {
+                      const id = `${Date.now()}-0`;
+                      setItems([{ id, date: new Date().toISOString().split('T')[0], merchant: '', amount: 0, category: 'その他', notes: transcription.slice(0, 100), confidence: 'low', editing: true }]);
+                    }}
+                    className="w-full py-3 rounded-xl border-2 border-sage-200 text-sage-600 font-bold text-sm active:scale-95 transition-transform"
+                  >
+                    手動で取引を追加
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 font-medium">抽出された取引データ（{items.length}件）</p>
+              )}
 
-        {/* --- STEP: done --- */}
-        {step === 'done' && (
-          <div className="flex flex-col items-center gap-4 py-10">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle2 size={40} className="text-green-500" />
-            </div>
-            <p className="text-2xl font-bold text-gray-800">保存しました</p>
-            <p className="text-base text-gray-500">ホームに戻ります…</p>
-          </div>
-        )}
+              <div className="space-y-3">
+                {items.map(it => (
+                  <div key={it.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                    {it.confidence === 'low' && (
+                      <div className="flex items-center gap-2 mb-3 text-amber-600 bg-amber-50 rounded-xl px-3 py-2">
+                        <AlertTriangle size={14} />
+                        <span className="text-xs font-medium">確認が必要です</span>
+                      </div>
+                    )}
+                    {it.editing ? (
+                      <div className="space-y-3">
+                        <label className="flex items-center gap-3">
+                          <Calendar size={16} className="text-sage-400 flex-shrink-0" />
+                          <input type="date" value={it.date}
+                            onChange={e => updateItem(it.id, { date: e.target.value })}
+                            className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-sm text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300" />
+                        </label>
+                        <label className="flex items-center gap-3">
+                          <Store size={16} className="text-sage-400 flex-shrink-0" />
+                          <input type="text" value={it.merchant} placeholder="支払先・店名"
+                            onChange={e => updateItem(it.id, { merchant: e.target.value })}
+                            className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-sm text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300" />
+                        </label>
+                        <label className="flex items-center gap-3">
+                          <Coins size={16} className="text-sage-400 flex-shrink-0" />
+                          <div className="flex-1 relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">¥</span>
+                            <input type="number" value={it.amount}
+                              onChange={e => updateItem(it.id, { amount: Number(e.target.value) })}
+                              className="w-full border border-sand-300 rounded-xl pl-7 pr-3 py-2 text-sm text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300" />
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-3">
+                          <Tag size={16} className="text-sage-400 flex-shrink-0" />
+                          <div className="flex-1 relative">
+                            <select value={it.category}
+                              onChange={e => updateItem(it.id, { category: e.target.value as Category })}
+                              className="w-full appearance-none border border-sand-300 rounded-xl px-3 py-2 text-sm text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300">
+                              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-3">
+                          <FileText size={16} className="text-sage-400 flex-shrink-0" />
+                          <input type="text" value={it.notes} placeholder="備考（任意）"
+                            onChange={e => updateItem(it.id, { notes: e.target.value })}
+                            className="flex-1 border border-sand-300 rounded-xl px-3 py-2 text-sm text-gray-800 bg-sand-50 focus:outline-none focus:ring-2 focus:ring-sage-300" />
+                        </label>
+                        <button
+                          onClick={() => updateItem(it.id, { editing: false })}
+                          className="w-full flex items-center justify-center gap-2 bg-sage-500 text-white rounded-xl py-2.5 text-sm font-bold active:scale-95 transition-transform"
+                        >
+                          <Check size={16} /> 確定
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
+                              <Calendar size={12} />
+                              <span>{it.date.replace(/-/g, '/')}</span>
+                            </div>
+                            <CategoryBadge category={it.category} />
+                          </div>
+                          <span className="text-xl font-bold text-gray-800 tabular-nums">
+                            {formatAmount(it.amount)}
+                          </span>
+                        </div>
+                        {it.merchant && <p className="text-sm text-gray-700 font-medium mb-1">{it.merchant}</p>}
+                        {it.notes && <p className="text-xs text-gray-400">{it.notes}</p>}
+                        <button
+                          onClick={() => updateItem(it.id, { editing: true })}
+                          className="mt-2 flex items-center gap-1 text-xs text-sage-500 font-medium border border-sage-200 rounded-lg px-2.5 py-1 hover:bg-sage-50 transition-colors"
+                        >
+                          <Pencil size={12} /> 修正
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {items.length > 0 && (
+                <button
+                  onClick={saveAll}
+                  className="w-full bg-sage-500 text-white rounded-2xl py-4 text-lg font-bold shadow-md shadow-sage-200 active:scale-95 transition-transform flex items-center justify-center gap-2"
+                >
+                  すべて保存する
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

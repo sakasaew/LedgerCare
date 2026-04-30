@@ -123,14 +123,14 @@ export default function SyncPage() {
 
   return (
     <div>
-      <header className="px-5 pt-12 pb-4">
-        <h1 className="text-3xl font-bold text-gray-800">同期</h1>
-        <p className="text-base text-gray-500 mt-1">
+      <header className="px-5 pt-8 pb-4 lg:px-8 lg:max-w-2xl lg:mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800">同期</h1>
+        <p className="text-sm text-gray-500 mt-1">
           Googleスプレッドシートに書き出します
         </p>
       </header>
 
-      <div className="px-5 pb-10 space-y-5">
+      <div className="px-5 pb-10 space-y-4 lg:px-8 lg:max-w-2xl lg:mx-auto">
 
         {/* ── 保存先設定 ── */}
         <div className="bg-white rounded-3xl p-5 shadow-sm">

@@ -31,16 +31,16 @@ export default function HistoryPage() {
   return (
     <div>
       {/* ヘッダー */}
-      <header className="px-5 pt-12 pb-4">
-        <h1 className="text-3xl font-bold text-gray-800">取引履歴</h1>
-        <p className="text-base text-gray-500 mt-1">過去の記録を確認できます</p>
+      <header className="px-5 pt-8 pb-4 lg:px-8 lg:max-w-4xl lg:mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800">取引履歴</h1>
+        <p className="text-sm text-gray-500 mt-1">過去の記録を確認できます</p>
       </header>
 
-      <div className="px-5 space-y-5 pb-10">
+      <div className="px-5 space-y-4 pb-10 lg:px-8 lg:max-w-4xl lg:mx-auto">
         {/* 今月の支出カード */}
-        <div className="bg-white rounded-3xl p-5 shadow-sm">
-          <p className="text-sm font-medium text-gray-400 mb-1">今月の支出</p>
-          <p className="text-4xl font-bold text-gray-800 tabular-nums">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <p className="text-xs font-medium text-gray-400 mb-1">今月の支出</p>
+          <p className="text-3xl font-bold text-gray-800 tabular-nums">
             {formatAmount(monthlyTotal)}
           </p>
         </div>
