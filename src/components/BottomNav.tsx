@@ -13,7 +13,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-sand-200 safe-bottom">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-sand-200 safe-bottom">
       <div className="max-w-[430px] mx-auto flex">
         {NAV.map(({ href, label, Icon }) => {
           const active = pathname === href;
