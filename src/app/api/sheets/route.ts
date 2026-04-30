@@ -31,13 +31,13 @@ export async function POST(req: NextRequest) {
     // ヘッダー行の確認・追加
     const check = await sheets.spreadsheets.values.get({
       spreadsheetId: spreadsheetId.trim(),
-      range: 'シート1!A1:G1',
+      range: 'A1:G1',
     });
 
     if (!check.data.values?.length) {
       await sheets.spreadsheets.values.update({
         spreadsheetId: spreadsheetId.trim(),
-        range: 'シート1!A1:G1',
+        range: 'A1:G1',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
           values: [['ID', '日付', '支払先', '金額（円）', 'カテゴリ', '備考', '登録日時']],
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: spreadsheetId.trim(),
-      range: 'シート1!A:G',
+      range: 'A:G',
       valueInputOption: 'USER_ENTERED',
       requestBody: { values },
     });

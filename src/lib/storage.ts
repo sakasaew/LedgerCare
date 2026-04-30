@@ -5,6 +5,7 @@ const SETTINGS_KEY = 'lc_settings';
 
 export interface AppSettings {
   spreadsheetId: string;
+  spreadsheetTitle?: string;
 }
 
 export function getTransactions(): Transaction[] {

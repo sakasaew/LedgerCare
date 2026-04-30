@@ -10,6 +10,11 @@ import { compressImage } from '@/lib/imageUtils';
 import type { Transaction } from '@/lib/types';
 import TransactionItem from '@/components/TransactionItem';
 
+const DEMO_TRANSACTIONS: Transaction[] = [
+  { id: 'd1', date: '2024-10-24', merchant: 'タクシー代', amount: 3500, category: '交通費', notes: '', confidence: 'high', createdAt: '', synced: false },
+  { id: 'd2', date: '2024-10-23', merchant: '接待費', amount: 12000, category: '交際費', notes: '', confidence: 'high', createdAt: '', synced: false },
+];
+
 export default function HomePage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -19,7 +24,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setRecent(getTransactions().slice(0, 3));
+    const txs = getTransactions();
+    setRecent(txs.length > 0 ? txs.slice(0, 3) : DEMO_TRANSACTIONS);
   }, []);
 
   const handleFile = async (file: File | undefined) => {

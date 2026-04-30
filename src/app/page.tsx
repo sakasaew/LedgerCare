@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
 
+const DEMO_KEY = 'lc_demo_mode';
+
 function GoogleIcon() {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
@@ -22,6 +24,11 @@ export default function LoginPage() {
   useEffect(() => {
     if (status === 'authenticated') router.replace('/home');
   }, [status, router]);
+
+  const handleDemo = () => {
+    localStorage.setItem(DEMO_KEY, '1');
+    router.push('/home');
+  };
 
   if (status === 'loading' || status === 'authenticated') {
     return (
@@ -61,6 +68,12 @@ export default function LoginPage() {
           >
             <GoogleIcon />
             Googleでログイン
+          </button>
+          <button
+            onClick={handleDemo}
+            className="w-full mt-3 py-4 rounded-2xl text-base text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            デモで見る（ログイン不要）
           </button>
         </div>
 
